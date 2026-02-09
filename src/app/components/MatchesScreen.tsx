@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { RequestCard } from './RequestCard';
 import { useState, useEffect } from 'react';
 import { supabase, Request } from '../../lib/supabase';
+import { CityInput } from './CityInput';
 
 interface MatchesScreenProps {
   onBack: () => void;
@@ -10,12 +11,18 @@ interface MatchesScreenProps {
 }
 
 export function MatchesScreen({ onBack, onShowContacts }: MatchesScreenProps) {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [fromCity, setFromCity] = useState('');
+  const [toCity, setToCity] = useState('');
   const [matches, setMatches] = useState<Request[]>([]);
+  const [allRequests, setAllRequests] = useState<Request[]>([]);
 
   useEffect(() => {
     loadMatches();
   }, []);
+
+  useEffect(() => {
+    filterMatches();
+  }, [fromCity, toCity, allRequests]);
 
   const loadMatches = async () => {
     const { data } = await supabase
@@ -23,7 +30,28 @@ export function MatchesScreen({ onBack, onShowContacts }: MatchesScreenProps) {
       .select('*')
       .order('created_at', { ascending: false });
     
-    if (data) setMatches(data);
+    if (data) {
+      setAllRequests(data);
+      setMatches(data);
+    }
+  };
+
+  const filterMatches = () => {
+    let filtered = allRequests;
+    
+    if (fromCity) {
+      filtered = filtered.filter(r => 
+        r.from_city.toLowerCase().includes(fromCity.toLowerCase())
+      );
+    }
+    
+    if (toCity) {
+      filtered = filtered.filter(r => 
+        r.to_city.toLowerCase().includes(toCity.toLowerCase())
+      );
+    }
+    
+    setMatches(filtered);
   };
 
   return (
@@ -46,17 +74,16 @@ export function MatchesScreen({ onBack, onShowContacts }: MatchesScreenProps) {
         </div>
 
         {/* Поиск */}
-        <div className="relative">
-          <Search
-            className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
-            strokeWidth={1.5}
+        <div className="space-y-3">
+          <CityInput
+            value={fromCity}
+            onChange={setFromCity}
+            placeholder="Откуда"
           />
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Поиск по маршруту или дате"
-            className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          <CityInput
+            value={toCity}
+            onChange={setToCity}
+            placeholder="Куда"
           />
         </div>
       </div>
