@@ -39,6 +39,9 @@ export default function App() {
         setIsLoggedIn(true);
         setCurrentScreen('home');
       });
+    } else {
+      setIsLoggedIn(true);
+      setCurrentScreen('home');
     }
   }, []);
 
@@ -85,10 +88,7 @@ export default function App() {
     setActiveTab('home');
   };
 
-  // Экран приветствия
-  if (!isLoggedIn) {
-    return <WelcomeScreen onLogin={handleLogin} />;
-  }
+  // Экран приветствия убран - автоматический вход
 
   return (
     <div className="relative max-w-2xl mx-auto">
