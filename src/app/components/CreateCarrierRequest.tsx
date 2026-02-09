@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { useState } from 'react';
 import { supabase } from '../../lib/supabase';
 import { getTelegramUser } from '../../lib/telegram';
+import { CityInput } from './CityInput';
 
 interface CreateCarrierRequestProps {
   onBack: () => void;
@@ -67,23 +68,11 @@ export function CreateCarrierRequest({ onBack, onSubmit }: CreateCarrierRequestP
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Откуда
           </label>
-          <div className="relative">
-            <MapPin
-              className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
-              strokeWidth={1.5}
-            />
-            <select
-              value={formData.from}
-              onChange={(e) => setFormData({ ...formData, from: e.target.value })}
-              className="w-full pl-12 pr-4 py-3.5 border border-gray-300 rounded-xl bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="">Выберите город</option>
-              <option value="moscow">Москва</option>
-              <option value="spb">Санкт-Петербург</option>
-              <option value="sochi">Сочи</option>
-              <option value="kazan">Казань</option>
-            </select>
-          </div>
+          <CityInput
+            value={formData.from}
+            onChange={(val) => setFormData({ ...formData, from: val })}
+            placeholder="Введите город"
+          />
         </div>
 
         {/* Куда */}
@@ -91,23 +80,11 @@ export function CreateCarrierRequest({ onBack, onSubmit }: CreateCarrierRequestP
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Куда
           </label>
-          <div className="relative">
-            <MapPin
-              className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
-              strokeWidth={1.5}
-            />
-            <select
-              value={formData.to}
-              onChange={(e) => setFormData({ ...formData, to: e.target.value })}
-              className="w-full pl-12 pr-4 py-3.5 border border-gray-300 rounded-xl bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="">Выберите город</option>
-              <option value="moscow">Москва</option>
-              <option value="spb">Санкт-Петербург</option>
-              <option value="sochi">Сочи</option>
-              <option value="kazan">Казань</option>
-            </select>
-          </div>
+          <CityInput
+            value={formData.to}
+            onChange={(val) => setFormData({ ...formData, to: val })}
+            placeholder="Введите город"
+          />
         </div>
 
         {/* Дата */}
