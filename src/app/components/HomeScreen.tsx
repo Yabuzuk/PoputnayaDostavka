@@ -8,7 +8,7 @@ interface HomeScreenProps {
   username: string;
   onCreateSenderRequest: () => void;
   onCreateCarrierRequest: () => void;
-  onShowContacts: () => void;
+  onShowContacts: (username: string) => void;
   onViewMatches: () => void;
 }
 

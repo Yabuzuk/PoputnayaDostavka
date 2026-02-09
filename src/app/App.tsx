@@ -23,7 +23,7 @@ export default function App() {
   const [currentScreen, setCurrentScreen] = useState<Screen>('welcome');
   const [activeTab, setActiveTab] = useState('home');
   const [showContactsModal, setShowContactsModal] = useState(false);
-  const [selectedUsername, setSelectedUsername] = useState('@alex_pilot');
+  const [selectedUsername, setSelectedUsername] = useState('');
   const [telegramUser, setTelegramUser] = useState<any>(null);
 
   useEffect(() => {
@@ -72,7 +72,7 @@ export default function App() {
     }
   };
 
-  const handleShowContacts = (username: string = '@alex_pilot') => {
+  const handleShowContacts = (username: string) => {
     setSelectedUsername(username);
     setShowContactsModal(true);
   };

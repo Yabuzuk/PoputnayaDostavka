@@ -7,7 +7,7 @@ import { CityInput } from './CityInput';
 
 interface MatchesScreenProps {
   onBack: () => void;
-  onShowContacts: () => void;
+  onShowContacts: (username: string) => void;
 }
 
 export function MatchesScreen({ onBack, onShowContacts }: MatchesScreenProps) {

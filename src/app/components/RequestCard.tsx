@@ -9,7 +9,7 @@ interface RequestCardProps {
   from: string;
   to: string;
   type?: 'sender' | 'carrier';
-  onShowContacts?: () => void;
+  onShowContacts?: (username: string) => void;
 }
 
 export function RequestCard({
@@ -90,7 +90,7 @@ export function RequestCard({
       {onShowContacts && (
         <motion.button
           whileTap={{ scale: 0.97 }}
-          onClick={onShowContacts}
+          onClick={() => onShowContacts(username)}
           className={`w-full text-white py-2.5 rounded-xl font-medium transition-colors ${
             isSender 
               ? 'bg-blue-500 hover:bg-blue-600' 
