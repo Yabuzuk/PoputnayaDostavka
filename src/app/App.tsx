@@ -40,6 +40,14 @@ export default function App() {
         setCurrentScreen('home');
       });
     } else {
+      // Моковый пользователь для тестирования
+      const mockUser = {
+        id: 123456789,
+        username: 'testuser',
+        first_name: 'Test',
+        last_name: 'User'
+      };
+      setTelegramUser(mockUser);
       setIsLoggedIn(true);
       setCurrentScreen('home');
     }
@@ -95,7 +103,7 @@ export default function App() {
       {/* Экраны */}
       {currentScreen === 'home' && (
         <HomeScreen
-          username={telegramUser?.username || '@username'}
+          username={telegramUser?.username ? `@${telegramUser.username}` : '@testuser'}
           onCreateSenderRequest={handleCreateSenderRequest}
           onCreateCarrierRequest={handleCreateCarrierRequest}
           onShowContacts={() => handleShowContacts()}
