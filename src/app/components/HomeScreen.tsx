@@ -30,12 +30,29 @@ export function HomeScreen({
     const { data } = await supabase
       .from('requests')
       .select('*')
-      .order('created_at', { ascending: false })
-      .limit(10);
+      .order('created_at', { ascending: false });
     
     if (data) {
-      setMyRequests(data.filter(r => r.username === username));
-      setMatches(data.filter(r => r.username !== username));
+      const myReqs = data.filter(r => r.username === username);
+      setMyRequests(myReqs);
+      
+      // Находим совпадения: противоположный тип + тот же маршрут + близкая дата
+      const matchedReqs = data.filter(r => {
+        if (r.username === username) return false;
+        
+        return myReqs.some(myReq => {
+          const sameRoute = myReq.from_city === r.from_city && myReq.to_city === r.to_city;
+          const oppositeType = myReq.type !== r.type;
+          const myDate = new Date(myReq.date);
+          const rDate = new Date(r.date);
+          const daysDiff = Math.abs((myDate.getTime() - rDate.getTime()) / (1000 * 60 * 60 * 24));
+          const closeDate = daysDiff <= 3; // ±3 дня
+          
+          return sameRoute && oppositeType && closeDate;
+        });
+      });
+      
+      setMatches(matchedReqs);
     }
   };
 
